@@ -1,15 +1,13 @@
 import type ModuleInstance from './main.js'
 
 export type VariablesSchema = {
-	variable1: string
-	variable2: string
-	variable3: string
+	status: string
+	status_text: string
 }
 
 export function UpdateVariableDefinitions(self: ModuleInstance): void {
 	self.setVariableDefinitions({
-		variable1: { name: 'My first variable' },
-		variable2: { name: 'My second variable' },
-		variable3: { name: 'Another variable' },
+		status: { name: 'Translation status (raw value, e.g. running)' },
+		status_text: { name: 'Translation status (display text, e.g. Running)' },
 	})
 }

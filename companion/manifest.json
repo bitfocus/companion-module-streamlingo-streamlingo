@@ -1,28 +1,28 @@
 {
 	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
 	"type": "connection",
-	"id": "your-module-name",
-	"name": "your-module-name",
-	"shortname": "module-shortname",
-	"description": "A short one line description of your module",
+	"id": "streamlingo-streamlingo",
+	"name": "streamlingo-streamlingo",
+	"shortname": "streamlingo",
+	"description": "Start, stop, pause and resume Streamlingo live translation",
 	"version": "0.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-your-module-name.git",
-	"bugs": "https://github.com/bitfocus/companion-module-your-module-name/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-streamlingo-streamlingo.git",
+	"bugs": "https://github.com/bitfocus/companion-module-streamlingo-streamlingo/issues",
 	"maintainers": [
 		{
-			"name": "Your name",
-			"email": "Your email"
+			"name": "Sam Anderson",
+			"email": "sam@samanderson.org"
 		}
 	],
 	"runtime": {
-		"type": "node26",
+		"type": "node22",
 		"api": "nodejs-ipc",
 		"apiVersion": "0.0.0",
 		"entrypoint": "../dist/main.js"
 	},
-	"legacyIds": [],
-	"manufacturer": "Your company",
-	"products": ["Your product"],
-	"keywords": []
+	"legacyIds": ["streamlingo"],
+	"manufacturer": "Streamlingo",
+	"products": ["Streamlingo"],
+	"keywords": ["translation", "interpretation", "live translation", "captions", "AI"]
 }

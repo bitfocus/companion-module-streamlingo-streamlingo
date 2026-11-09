@@ -1,42 +1,36 @@
+import { combineRgb } from '@companion-module/base'
+import { KNOWN_STATUSES, type StreamlingoStatus } from './api.js'
 import type ModuleInstance from './main.js'
 
 export type FeedbacksSchema = {
-	sample_feedback: {
+	status: {
 		type: 'boolean'
 		options: {
-			num: number
+			status: StreamlingoStatus
 		}
 	}
 }
 
 export function UpdateFeedbacks(self: ModuleInstance): void {
 	self.setFeedbackDefinitions({
-		sample_feedback: {
-			name: 'Example Feedback',
+		status: {
+			name: 'Translation status',
+			description: 'Change the button style when the translation is in the selected state',
 			type: 'boolean',
 			defaultStyle: {
-				bgcolor: 0xff0000,
-				color: 0x000000,
+				bgcolor: combineRgb(0, 153, 0),
+				color: combineRgb(255, 255, 255),
 			},
 			options: [
 				{
-					id: 'num',
-					type: 'number',
-					label: 'Test',
-					default: 5,
-					min: 0,
-					max: 10,
-					clampValues: true, // If value is outside the min/max, clamp it to the min/max instead of rejecting the input
+					id: 'status',
+					type: 'dropdown',
+					label: 'Status',
+					default: 'running',
+					choices: KNOWN_STATUSES.map((s) => ({ id: s.id, label: s.label })),
 				},
 			],
-			callback: (feedback) => {
-				console.log('Hello world!', feedback.options.num)
-				if (feedback.options.num > 5) {
-					return true
-				} else {
-					return false
-				}
-			},
+			callback: (feedback) => self.status === feedback.options.status,
 		},
 	})
 }

@@ -21,14 +21,14 @@ Streamlingo must stay open in a browser, with audio going to it, for translation
 
 ### Actions
 
-| Action                | Description                                |
-| --------------------- | ------------------------------------------ |
-| Start translation     | Starts the translation (only when stopped) |
-| Stop translation      | Stops the translation                      |
-| Pause translation     | Pauses the translation (only when running) |
-| Resume translation    | Resumes the translation (only when paused) |
-| Toggle pause / resume | Pauses when running, resumes when paused   |
-| Toggle start / stop   | Starts when stopped, otherwise stops       |
+| Action                | Description                                                                     |
+| --------------------- | ------------------------------------------------------------------------------- |
+| Start translation     | Starts the translation (only when stopped)                                      |
+| Stop translation      | Stops the translation                                                           |
+| Pause translation     | Pauses the translation (only when running)                                      |
+| Resume translation    | Resumes the translation (only when paused)                                      |
+| Toggle pause / resume | Pauses when running, resumes when paused                                        |
+| Toggle start / stop   | Starts when stopped, otherwise stops (does nothing while the status is unknown) |
 
 Streamlingo ignores commands that don't fit the current state, such as pausing while stopped. These show as a warning in the connection log.
 
@@ -40,10 +40,10 @@ Streamlingo ignores commands that don't fit the current state, such as pausing w
 
 ### Variables
 
-| Variable                     | Description                                                                 |
-| ---------------------------- | --------------------------------------------------------------------------- |
-| `$(streamlingo:status)`      | Raw status: `stopped`, `starting`, `waiting_for_input`, `running`, `paused` |
-| `$(streamlingo:status_text)` | Display text: Stopped, Starting, Waiting for audio, Running, Paused         |
+| Variable                     | Description                                                                                                                  |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `$(streamlingo:status)`      | Raw status: `stopped`, `starting`, `waiting_for_input`, `running`, `paused`, or `unknown` when Streamlingo cannot be reached |
+| `$(streamlingo:status_text)` | Display text: Stopped, Starting, Waiting for audio, Running, Paused                                                          |
 
 Replace `streamlingo` with your connection's label if you renamed it.
 
@@ -60,4 +60,4 @@ Replace `streamlingo` with your connection's label if you renamed it.
 
 ### Presets
 
-Ready-made buttons for each command, start/stop and pause/resume toggles, and a status display. They are colored by status: green when running, amber while starting, waiting or paused, red when stopped.
+Ready-made buttons for each command, start/stop and pause/resume toggles, and a status display. They are colored by status: green when running, amber while starting or waiting for audio, blue when paused, and red when stopped.

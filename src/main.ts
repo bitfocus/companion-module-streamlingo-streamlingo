@@ -92,21 +92,25 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 
 	/**
 	 * Send a control command to Streamlingo, and update the status from the response
+	 * @param signal Aborted by Companion when the user aborts the button's running actions
 	 */
-	async sendCommand(action: Exclude<StreamlingoAction, 'status'>): Promise<void> {
+	async sendCommand(action: Exclude<StreamlingoAction, 'status'>, signal?: AbortSignal): Promise<void> {
 		if (!this.#apiKey) {
 			this.log('warn', `Cannot ${action}: no API key configured`)
 			return
 		}
 
+		const moduleSignal = this.#abort?.signal
 		try {
-			const newStatus = await callStreamlingo(this.#apiKey, action, REQUEST_TIMEOUT, this.#abort?.signal)
+			const newStatus = await callStreamlingo(this.#apiKey, action, REQUEST_TIMEOUT, [moduleSignal, signal])
+			if (signal?.aborted) return
 			this.#setStatus(newStatus)
 		} catch (e) {
+			if (signal?.aborted || moduleSignal?.aborted) return
 			if (e instanceof StreamlingoRequestError) {
 				// Streamlingo rejects commands that are not valid for the current state, e.g. pausing while stopped
 				this.log('warn', `Streamlingo rejected "${action}" while translation is ${this.status}: ${e.message}`)
-			} else if (!this.#abort?.signal.aborted) {
+			} else {
 				this.log('error', `Failed to send "${action}": ${errorMessage(e)}`)
 			}
 		}
@@ -129,7 +133,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 		if (!signal || signal.aborted) return
 
 		try {
-			const status = await callStreamlingo(this.#apiKey, 'status', REQUEST_TIMEOUT, signal)
+			const status = await callStreamlingo(this.#apiKey, 'status', REQUEST_TIMEOUT, [signal])
 			if (signal.aborted) return
 
 			this.#setStatus(status)

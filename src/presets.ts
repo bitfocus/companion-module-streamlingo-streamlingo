@@ -45,7 +45,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 			name: 'Pause translation',
 			style: { text: 'PAUSE', size: 'auto', color: WHITE, bgcolor: BLACK },
 			steps: [{ down: [{ actionId: 'pause', options: {} }], up: [] }],
-			feedbacks: [statusFeedback('paused', AMBER, BLACK)],
+			feedbacks: [statusFeedback('paused', BLUE)],
 		},
 		resume: {
 			type: 'simple',
@@ -71,7 +71,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 			name: 'Pause / resume toggle with status',
 			style: { text: `PAUSE / RESUME\\n${statusVar}`, size: 'auto', color: WHITE, bgcolor: BLACK },
 			steps: [{ down: [{ actionId: 'toggle_pause', options: {} }], up: [] }],
-			feedbacks: [statusFeedback('running', GREEN), statusFeedback('paused', AMBER, BLACK)],
+			feedbacks: [statusFeedback('running', GREEN), statusFeedback('paused', BLUE)],
 		},
 		status: {
 			type: 'simple',

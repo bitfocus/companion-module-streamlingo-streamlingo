@@ -16,40 +16,40 @@ export function UpdateActions(self: ModuleInstance): void {
 		start: {
 			name: 'Start translation',
 			options: [],
-			callback: async () => {
-				await self.sendCommand('start')
+			callback: async (_action, context) => {
+				await self.sendCommand('start', context.signal)
 			},
 		},
 		stop: {
 			name: 'Stop translation',
 			options: [],
-			callback: async () => {
-				await self.sendCommand('stop')
+			callback: async (_action, context) => {
+				await self.sendCommand('stop', context.signal)
 			},
 		},
 		pause: {
 			name: 'Pause translation',
 			options: [],
-			callback: async () => {
-				await self.sendCommand('pause')
+			callback: async (_action, context) => {
+				await self.sendCommand('pause', context.signal)
 			},
 		},
 		resume: {
 			name: 'Resume translation',
 			options: [],
-			callback: async () => {
-				await self.sendCommand('resume')
+			callback: async (_action, context) => {
+				await self.sendCommand('resume', context.signal)
 			},
 		},
 		toggle_pause: {
 			name: 'Toggle pause / resume',
 			description: 'Pauses when running, resumes when paused. Does nothing in any other state.',
 			options: [],
-			callback: async () => {
+			callback: async (_action, context) => {
 				if (self.status === 'running') {
-					await self.sendCommand('pause')
+					await self.sendCommand('pause', context.signal)
 				} else if (self.status === 'paused') {
-					await self.sendCommand('resume')
+					await self.sendCommand('resume', context.signal)
 				} else {
 					self.log('info', `Cannot toggle pause while translation is ${self.status}`)
 				}
@@ -57,10 +57,16 @@ export function UpdateActions(self: ModuleInstance): void {
 		},
 		toggle_start_stop: {
 			name: 'Toggle start / stop',
-			description: 'Starts when stopped, otherwise stops.',
+			description: 'Starts when stopped, otherwise stops. Does nothing while the status is unknown.',
 			options: [],
-			callback: async () => {
-				await self.sendCommand(self.status === 'stopped' ? 'start' : 'stop')
+			callback: async (_action, context) => {
+				if (self.status === 'stopped') {
+					await self.sendCommand('start', context.signal)
+				} else if (self.status === 'unknown' || self.status === '') {
+					self.log('info', 'Cannot toggle start / stop while the translation status is unknown')
+				} else {
+					await self.sendCommand('stop', context.signal)
+				}
 			},
 		},
 	})
